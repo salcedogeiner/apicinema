@@ -46,7 +46,13 @@ router.post('/', function(req, res, next) {
 
 router.put('/', function(req, res, next) {
     console.log(req.body)
-    Movie.update(req.body,function(err,result){
+    var data={
+        name:req.body.name,
+        date:req.body.date,
+        language:req.body.language
+    }
+    Movie.findOneAndUpdate({_id:req.body._id},data,{upsert:true},function(err,result){
+        console.log(err);
         if (err) return handleError(err);
         res.json(result);
     })    
@@ -55,6 +61,8 @@ router.put('/', function(req, res, next) {
 router.delete('/:id', function(req, res, next) {
     console.log(req.body)
     Movie.remove({_id: req.params.id},function(err,result){
+        console.log(err);
+        
         if (err) return handleError(err);
         res.json(result);
     })    

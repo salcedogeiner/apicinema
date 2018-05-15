@@ -59,12 +59,17 @@ router.post('/movie/:id', function(req, res, next) {
 
 router.put('/', function(req, res, next) {
     console.log(req.body)
-    Cinema.update(req.body,function(err,result){
+    var data={
+        name:req.body.name,
+        location:req.body.location,
+        movies:req.body.movies
+    }
+    Cinema.findOneAndUpdate({_id:req.body._id},data,{upsert:true},function(err,result){
+        console.log(err);
         if (err) return handleError(err);
         res.json(result);
     })    
 });
-
 router.delete('/:id', function(req, res, next) {
     console.log(req.body)
     Cinema.remove({_id: req.params.id},function(err,result){
